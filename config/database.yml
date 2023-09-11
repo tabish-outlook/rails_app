@@ -1,0 +1,8 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  #  database: national_qam_nyt_25_03_2022 #national_qam_01_09_2022 #national_qam_nyt_25_03_2022
+  database: test_db #national_qam_17_07_2023
+  pool: 5
+  username: postgres
+  password: word2pass
