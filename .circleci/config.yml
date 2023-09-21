@@ -2,7 +2,8 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/ruby:2.7.5
+
     environment:
       RAILS_ENV: test
 
@@ -14,14 +15,8 @@ jobs:
             - gems-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
 
       - run:
-          name: Install Dependencies (bundling..)
-          command: |
-            bundle install --path vendor/bundle
-
-      - save_cache:
-          key: gems-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+          name: Install Dependencies
+          command: bundle install
 
       - run:
           name: Database Setup (of testing app)
