@@ -2,7 +2,9 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.7.5
+      - image: cimg/base:stable
+    environment:
+      RAILS_ENV: test
 
     steps:
       - checkout
@@ -23,10 +25,7 @@ jobs:
 
       - run:
           name: Database Setup (of testing app)
-          command: |
-            bundle exec rails db:create
-            bundle exec rails db:schema:load
-            bundle exec rails db:test:prepare
+          command: bundle exec rails db:schema:load --trace
 
       - run:
           name: Run RSpec Tests

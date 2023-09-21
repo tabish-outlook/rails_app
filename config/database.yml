@@ -1,16 +1,18 @@
-development:
+default: &default
   adapter: postgresql
   encoding: unicode
-  #  database: national_qam_nyt_25_03_2022 #national_qam_01_09_2022 #national_qam_nyt_25_03_2022
-  database: test_db #national_qam_17_07_2023
-  pool: 5
-  username: postgres
-  password: word2pass
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV['PGUSER'] %>
+  password: <%= ENV['PGPASSWORD'] %>
+
+development:
+  <<: *default
+  database: auction_development
 
 test:
-  adapter: postgresql
-  encoding: unicode
-  database: testing_db
-  pool: 5
-  username: postgres
-  password: word2pass
+  <<: *default
+  database: auction_test
+
+production:
+  <<: *default
+  database: auction_production
