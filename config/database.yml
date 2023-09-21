@@ -6,3 +6,11 @@ development:
   pool: 5
   username: postgres
   password: word2pass
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: testing_db
+  pool: 5
+  username: postgres
+  password: word2pass
