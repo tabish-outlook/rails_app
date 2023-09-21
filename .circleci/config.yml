@@ -9,6 +9,7 @@ jobs:
 
     steps:
       - checkout
+      - ruby/install-deps
 
       - restore_cache:
           keys:
