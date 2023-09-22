@@ -57,6 +57,7 @@ workflows:
             - checkout_and_setup_ruby
       - run_tests:
           requires:
+            - checkout_and_setup_ruby
             - setup_postgres
 
 #version: 2.1
