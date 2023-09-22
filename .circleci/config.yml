@@ -3,15 +3,44 @@ orbs:
   ruby: circleci/ruby@1.1.2
 
 jobs:
-  build:
+  checkout_code:
     docker:
       - image: cimg/ruby:2.7.5-node
-      - image: cimg/postgres:13.8
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: auction_test
-          POSTGRES_PASSWORD: ""
+    steps:
+      - checkout
 
+  setup_ruby:
+    docker:
+      - image: cimg/ruby:2.7.5-node
+    steps:
+      - run:
+          name: Install Dependencies
+          command: |
+            # Setup Ruby-related dependencies here
+
+  bundle_install:
+    docker:
+      - image: cimg/ruby:2.7.5-node
+    steps:
+      - run:
+          name: Bundle Install
+          command: bundle install
+
+  setup_postgres:
+    docker:
+      - image: cimg/postgres:13.8
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: auction_test
+      POSTGRES_PASSWORD: ""
+    steps:
+      - run:
+          name: Wait for database
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+  run_tests:
+    docker:
+      - image: cimg/ruby:2.7.5-node
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
@@ -19,30 +48,77 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: ""
       RAILS_ENV: test
-
     steps:
-      - checkout
-      - ruby/install-deps
-
-      - run:
-          name: Install Dependencies
-          command: bundle install
-
-      - run:
-          name: Wait for database
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
-
       - run:
           name: Test Setup DB
           command: bundle exec rails db:schema:load --trace
-
       - run:
           name: Run Tests
-          command: |
-            bundle exec rspec
+          command: bundle exec rspec
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - checkout_code
+      - setup_ruby:
+          requires:
+            - checkout_code
+      - bundle_install:
+          requires:
+            - setup_ruby
+      - setup_postgres:
+          requires:
+            - bundle_install
+      - run_tests:
+          requires:
+            - setup_postgres
+
+#version: 2.1
+#orbs:
+#  ruby: circleci/ruby@1.1.2
+#
+#jobs:
+#  build:
+#    docker:
+#      - image: cimg/ruby:2.7.5-node
+#      - image: cimg/postgres:13.8
+#        environment:
+#          POSTGRES_USER: postgres
+#          POSTGRES_DB: auction_test
+#          POSTGRES_PASSWORD: ""
+#
+#    environment:
+#      BUNDLE_JOBS: "3"
+#      BUNDLE_RETRY: "3"
+#      PGHOST: 127.0.0.1
+#      PGUSER: postgres
+#      PGPASSWORD: ""
+#      RAILS_ENV: test
+#
+#    steps:
+#      - checkout
+#      - ruby/install-deps
+#
+#      - run:
+#          name: Install Dependencies
+#          command: bundle install
+#
+#      - run:
+#          name: Wait for database
+#          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+#
+#      - run:
+#          name: Test Setup DB
+#          command: bundle exec rails db:schema:load --trace
+#
+#      - run:
+#          name: Run Tests
+#          command: |
+#            bundle exec rspec
+#
+#workflows:
+#  version: 2
+#  build_and_test:
+#    jobs:
+#      - build
