@@ -35,10 +35,12 @@ jobs:
       - run:
           name: Test Setup DB
           command: bundle exec rails db:schema:load --trace
-          # psql -U postgres -q -d auction_test -f db/structure.sql -h localhost -p 5432
-          # pg_ctl -D /var/lib/postgresql/data -l logfile start
 
       - run:
           name: Run Tests
           command: |
             bundle exec rspec
+workflows:
+  jobs:
+    - build
+
