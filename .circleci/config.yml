@@ -37,6 +37,7 @@ jobs:
           command: |
             psql -U postgres -q -d auction_test -h localhost -p 5432
             bundle exec rails db:schema:load --trace
+          timeout: 20m
 
       - run:
           name: Run Tests
