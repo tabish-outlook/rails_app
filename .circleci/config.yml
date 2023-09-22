@@ -4,19 +4,14 @@ orbs:
 
 jobs:
   checkout_code:
-    docker:
-      - image: cimg/ruby:2.7.5-node
     steps:
       - checkout
 
-  setup_ruby:
+  install_ruby_deps:
     docker:
       - image: cimg/ruby:2.7.5-node
     steps:
-      - run:
-          name: Install Dependencies
-          command: |
-            # Setup Ruby-related dependencies here
+      - ruby/install-deps
 
   setup_postgres:
     docker:
@@ -53,7 +48,7 @@ workflows:
   build_and_test:
     jobs:
       - checkout_code
-      - setup_ruby:
+      - install_ruby_deps:
           requires:
             - checkout_code
       - setup_postgres:
