@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Test Setup DB
           command: |
-            psql -U postgres -q -d auction_test -h localhost -p 5432
+            psql -U postgres -q -d auction_test -f db/structure.sql -h localhost -p 5432
             bundle exec rails db:schema:load --trace
 
       - run:
