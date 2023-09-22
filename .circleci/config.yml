@@ -3,7 +3,7 @@ orbs:
   ruby: circleci/ruby@1.1.2
 
 jobs:
-  build:
+  checkout_and_setup_ruby:
     docker:
     - image: cimg/ruby:2.7.5-node
     steps:
@@ -49,10 +49,10 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - checkout_and_setup_ruby
       - setup_postgres:
           requires:
-            - build
+            - checkout_and_setup_ruby
       - run_tests:
           requires:
             - setup_postgres
