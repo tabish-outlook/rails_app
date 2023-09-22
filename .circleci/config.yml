@@ -26,6 +26,10 @@ jobs:
     docker:
       - image: cimg/ruby:2.7.5-node
       - image: cimg/postgres:13.8
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: auction_test
+          POSTGRES_PASSWORD: ""
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
