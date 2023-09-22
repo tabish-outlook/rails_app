@@ -20,7 +20,7 @@ jobs:
     steps:
       - run:
           name: Wait for database
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          command: dockerize -wait tcp://localhost:5432 -timeout 5s
 
   run_tests:
     docker:
