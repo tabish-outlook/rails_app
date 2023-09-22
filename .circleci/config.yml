@@ -18,14 +18,6 @@ jobs:
           command: |
             # Setup Ruby-related dependencies here
 
-  bundle_install:
-    docker:
-      - image: cimg/ruby:2.7.5-node
-    steps:
-      - run:
-          name: Bundle Install
-          command: bundle install
-
   setup_postgres:
     docker:
       - image: cimg/postgres:13.8
@@ -64,9 +56,6 @@ workflows:
       - setup_ruby:
           requires:
             - checkout_code
-      - bundle_install:
-          requires:
-            - setup_ruby
       - setup_postgres:
           requires:
             - bundle_install
