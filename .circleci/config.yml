@@ -40,7 +40,9 @@ jobs:
           name: Run Tests
           command: |
             bundle exec rspec
-workflows:
-  jobs:
-    - build
 
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
