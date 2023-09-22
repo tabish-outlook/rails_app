@@ -8,8 +8,8 @@ jobs:
     - image: cimg/ruby:2.7.5-node
     - image: cimg/postgres:13.8
     steps:
-      - ruby/install-deps
       - checkout
+      - ruby/install-deps
 
   bundle_install:
     docker:
