@@ -6,6 +6,7 @@ jobs:
   checkout_and_setup_ruby:
     docker:
     - image: cimg/ruby:2.7.5-node
+    - image: cimg/postgres:13.8
     steps:
       - ruby/install-deps
       - checkout
