@@ -11,9 +11,13 @@ jobs:
       - checkout
 
   bundle_install:
-    - run:
-      name: Install Dependencies
-      command: bundle install
+    docker:
+      - image: cimg/ruby:2.7.5-node
+      - image: cimg/postgres:13.8
+    steps:
+      - run:
+          name: Install bundle
+          command: bundle install
 
   run_tests:
     docker:
