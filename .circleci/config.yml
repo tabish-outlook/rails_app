@@ -47,8 +47,12 @@ workflows:
   build_and_test:
     jobs:
       - checkout_and_setup_ruby
-      - bundle_install
-      - run_tests
+      - bundle_install:
+          requires:
+            - checkout_and_setup_ruby
+      - run_tests:
+          requires:
+            - bundle_install
 
 #version: 2.1
 #orbs:
