@@ -6,23 +6,14 @@ jobs:
   checkout_and_setup_ruby:
     docker:
     - image: cimg/ruby:2.7.5-node
-    - image: cimg/postgres:13.8
     steps:
-      - checkout
       - ruby/install-deps
+      - checkout
 
-  setup_postgres:
-    docker:
-      - image: cimg/ruby:2.7.5-node
-      - image: cimg/postgres:13.8
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: auction_test
-          POSTGRES_PASSWORD: ""
-    steps:
-      - run:
-          name: Wait for database
-          command: dockerize -wait tcp://localhost:5432 -timeout 5s
+  bundle_install:
+    - run:
+      name: Install Dependencies
+      command: bundle install
 
   run_tests:
     docker:
@@ -52,13 +43,8 @@ workflows:
   build_and_test:
     jobs:
       - checkout_and_setup_ruby
-      - setup_postgres:
-          requires:
-            - checkout_and_setup_ruby
-      - run_tests:
-          requires:
-            - checkout_and_setup_ruby
-            - setup_postgres
+      - bundle_install
+      - run_tests
 
 #version: 2.1
 #orbs:
