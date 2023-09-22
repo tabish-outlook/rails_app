@@ -1,18 +1,23 @@
-default: &default
+development:
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV['PGUSER'] %>
-  password: <%= ENV['PGPASSWORD'] %>
-
-development:
-  <<: *default
-  database: auction_development
+  database: auction_development #test_db
+  pool: 5
+  username: postgres_circleci #postgres
+  password:
 
 test:
-  <<: *default
+  adapter: postgresql
+  encoding: unicode
   database: auction_test
+  pool: 5
+  username: postgres_circleci #postgres
+  password:
 
 production:
-  <<: *default
+  adapter: postgresql
+  encoding: unicode
   database: auction_production
+  pool: 5
+  username: postgres_circleci #postgres
+  password:

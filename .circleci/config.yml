@@ -6,26 +6,40 @@ jobs:
   build:
     docker:
       - image: cimg/ruby:2.7.5-node
+      - image: cimg/postgres:10.20
+        environment:
+          POSTGRES_USER: postgres_circleci
+          POSTGRES_DB: auction_test
+          POSTGRES_PASSWORD: ""
 
     environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      PGHOST: 127.0.0.1
+      PGUSER: postgres_circleci
+      PGPASSWORD: ""
       RAILS_ENV: test
 
     steps:
       - checkout
       - ruby/install-deps
 
-      - restore_cache:
-          keys:
-            - gems-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-
       - run:
           name: Install Dependencies
           command: bundle install
 
       - run:
-          name: Database Setup (of testing app)
-          command: bundle exec rails db:schema:load --trace
+          name: Wait for database
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - run:
-          name: Run RSpec Tests
-          command: bundle exec rspec
+          name: Test Setup DB
+          command: |
+            psql -U circleci_postgres -q -d auction_test -h localhost -p 5432
+            bundle exec rake assets:precompile
+            bundle exec rails db:schema:load --trace
+
+      - run:
+          name: Run Tests
+          command: |
+            bundle exec rspec
