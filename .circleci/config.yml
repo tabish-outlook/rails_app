@@ -6,12 +6,13 @@ jobs:
   build:
     docker:
     - image: cimg/ruby:2.7.5-node
+    - image: cimg/postgres:13.8
     steps:
       - checkout
       - ruby/install-deps
-
   setup_postgres:
     docker:
+      - image: cimg/ruby:2.7.5-node
       - image: cimg/postgres:13.8
     environment:
       POSTGRES_USER: postgres
@@ -21,7 +22,6 @@ jobs:
       - run:
           name: Wait for database
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
-
   run_tests:
     docker:
       - image: cimg/ruby:2.7.5-node
