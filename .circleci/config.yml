@@ -57,8 +57,6 @@ workflows:
           requires:
             - checkout_code
       - setup_postgres:
-          requires:
-            - bundle_install
       - run_tests:
           requires:
             - setup_postgres
