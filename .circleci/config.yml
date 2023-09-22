@@ -3,14 +3,11 @@ orbs:
   ruby: circleci/ruby@1.1.2
 
 jobs:
-  checkout_code:
+  build:
+    docker:
+    - image: cimg/ruby:2.7.5-node
     steps:
       - checkout
-
-  install_ruby_deps:
-    docker:
-      - image: cimg/ruby:2.7.5-node
-    steps:
       - ruby/install-deps
 
   setup_postgres:
@@ -28,6 +25,7 @@ jobs:
   run_tests:
     docker:
       - image: cimg/ruby:2.7.5-node
+      - image: cimg/postgres:13.8
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
@@ -47,11 +45,10 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - checkout_code
-      - install_ruby_deps:
-          requires:
-            - checkout_code
+      - build
       - setup_postgres:
+          requires:
+            - build
       - run_tests:
           requires:
             - setup_postgres
