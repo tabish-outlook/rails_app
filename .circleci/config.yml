@@ -6,7 +6,7 @@ jobs:
   build:
     docker:
       - image: cimg/ruby:2.7.5-node
-      - image: cimg/postgres:15.0
+      - image: cimg/postgres:13.2
         environment:
           POSTGRES_USER: postgres
           POSTGRES_DB: auction_test
@@ -37,7 +37,6 @@ jobs:
           command: |
             psql -U postgres -q -d auction_test -h localhost -p 5432
             bundle exec rails db:schema:load --trace
-          timeout: 20m
 
       - run:
           name: Run Tests
