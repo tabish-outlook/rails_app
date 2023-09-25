@@ -13,6 +13,12 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ""
 
+    environment:
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      RAILS_ENV: test
+
     steps:
       - checkout
       - ruby/install-deps

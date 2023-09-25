@@ -1,23 +1,23 @@
-development:
-  adapter: postgresql
-  encoding: unicode
-  database: auction_development #test_db
-  pool: 5
-  username: postgres
-  password:
+#development:
+#  adapter: postgresql
+#  encoding: unicode
+#  database: auction_development #test_db
+#  pool: 5
+#  username: postgres
+#  password:
 
-test:
-  adapter: postgresql
-  encoding: unicode
-  database: auction_test
-  pool: 5
-  username: postgres
-  password:
+#test:
+#  adapter: postgresql
+#  encoding: unicode
+#  database: auction_test
+#  pool: 5
+#  username: postgres
+#  password:
 
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: auction_production
-  pool: 5
-  username: postgres
-  password:
+#production:
+#  adapter: postgresql
+#  encoding: unicode
+#  database: auction_production
+#  pool: 5
+#  username: postgres
+#  password:
