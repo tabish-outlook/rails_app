@@ -5,8 +5,8 @@ orbs:
 jobs:
   checkout_setup_ruby_pg_and_bundle:
     docker:
-    - image: cimg/ruby:2.7.5-node
-    - image: cimg/postgres:13.8
+      - image: cimg/ruby:2.7.5-node
+      - image: cimg/postgres:13.8
     steps:
       - checkout
       - ruby/install-deps
