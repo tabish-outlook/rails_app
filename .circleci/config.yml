@@ -3,10 +3,23 @@ orbs:
   ruby: circleci/ruby@1.1.2
 
 jobs:
-  checkout_setup_ruby_pg_and_bundle:
+  build:
     docker:
       - image: cimg/ruby:2.7.5-node
       - image: cimg/postgres:13.8
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: auction_test
+          POSTGRES_PASSWORD: ""
+
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      RAILS_ENV: test
+
     steps:
       - checkout
       - ruby/install-deps
@@ -17,22 +30,6 @@ jobs:
           name: Install bundle
           command: bundle install
 
-  setup_database_and_run_tests:
-    docker:
-      - image: cimg/ruby:2.7.5-node
-      - image: cimg/postgres:13.8
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: auction_test
-          POSTGRES_PASSWORD: ""
-    environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      PGHOST: 127.0.0.1
-      PGUSER: postgres
-      PGPASSWORD: ""
-      RAILS_ENV: test
-    steps:
       - run:
           name: Test Setup DB
           command: bundle exec rails db:schema:load --trace
@@ -44,10 +41,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - checkout_setup_ruby_pg_and_bundle
-      - setup_database_and_run_tests:
-          requires:
-            - checkout_setup_ruby_pg_and_bundle
+      - build
 
 #version: 2.1
 #orbs:
