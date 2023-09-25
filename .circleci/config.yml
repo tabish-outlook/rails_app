@@ -8,17 +8,10 @@ jobs:
       - image: cimg/ruby:2.7.5-node
       - image: cimg/postgres:13.8
         environment:
-          POSTGRES_USER: postgres
           POSTGRES_DB: auction_test
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ""
-
-    environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      PGHOST: 127.0.0.1
-      PGUSER: postgres
-      PGPASSWORD: ""
-      RAILS_ENV: test
 
     steps:
       - checkout
