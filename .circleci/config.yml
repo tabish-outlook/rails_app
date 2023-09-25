@@ -9,9 +9,14 @@ jobs:
       - image: cimg/postgres:13.8
         environment:
           POSTGRES_DB: auction_test
-          RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ""
+
+    environment:
+      PGHOST: 127.0.0.1
+      PGUSER: postgres
+      PGPASSWORD: ""
+      RAILS_ENV: test
 
     steps:
       - checkout
